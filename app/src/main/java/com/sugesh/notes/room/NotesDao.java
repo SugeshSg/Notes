@@ -22,6 +22,9 @@ public interface NotesDao {
     @Query("SELECT * FROM notes_table")
     LiveData<List<Notes>> getNotes();
 
+    @Query("SELECT * FROM user_table where email_id =:username and password =:password ")
+    Users isLoggedUser(String username,String password);
+
     @Query("SELECT * FROM user_table")
     LiveData<List<Users>> getUsers();
 }

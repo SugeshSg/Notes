@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.sugesh.notes.entities.Notes;
 import com.sugesh.notes.entities.Users;
 import com.sugesh.notes.room.NotesRepository;
+import com.sugesh.notes.util.Callback;
 
 import java.util.List;
 
@@ -31,6 +32,11 @@ public class NotesViewModel extends AndroidViewModel {
 
     public void insertUser(Users users) {
         repository.insertUser(users);
+
+    }
+
+    public void isLoggedUser(Users users, Callback<Users> callback) {
+          repository.isLoggedUser(users,callback);
 
     }
 

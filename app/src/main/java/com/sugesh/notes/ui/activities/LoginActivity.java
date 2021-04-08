@@ -17,6 +17,7 @@ import com.sugesh.notes.R;
 import com.sugesh.notes.entities.Users;
 import com.sugesh.notes.ui.viewmodel.NotesViewModel;
 import com.sugesh.notes.util.AppConstants;
+import com.sugesh.notes.util.Callback;
 
 import java.util.List;
 
@@ -56,22 +57,20 @@ public class LoginActivity extends AppCompatActivity {
 
                 final String userEmail = userEmailView.getText().toString().trim();
                 final String password = passwordView.getText().toString().trim();
+                Users LoggedUser = new Users(userEmail,password,"qwer");
                 notesViewModel = ViewModelProviders.of(LoginActivity.this).get(NotesViewModel.class);
-                notesViewModel.getAllUsers().observe(LoginActivity.this, new Observer<List<Users>>() {
+                notesViewModel.isLoggedUser(LoggedUser,new Callback<Users>(){
                     @Override
-                    public void onChanged(@Nullable List<Users> userslist) {
+                    public void onComplete(Users users) {
                         boolean login_status = false;
                         String userID = null;
-                        if (userslist != null && !userEmail.isEmpty() && !password.isEmpty())
+                        if (users != null && !userEmail.isEmpty() && !password.isEmpty())
                         {
-                            for (Users users : userslist)
-                            {
-                                if (users.getEmail_id().equals(userEmail) && users.getPassword().equals(password)) {
-                                    userID = users.getUserID();
-                                    login_status = true;
-                                    break;
-                                }
+                            if (users.getEmail_id().equals(userEmail) && users.getPassword().equals(password)) {
+                                userID = users.getUserID();
+                                login_status = true;
                             }
+
                         }
                         if (login_status)
                         {
@@ -87,8 +86,10 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Invalid email/password", Toast.LENGTH_SHORT).show();
                             passwordView.setText("");
                         }
+
                     }
-                    });
+                });
+
 
 
                 }
